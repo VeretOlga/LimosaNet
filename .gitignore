@@ -1,0 +1,24 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+*.dll
+/LimosaNet/LimosaNet/obj/
+/LimosaNet/LN.Application/obj/
+*.vsidx
+/LimosaNet/LimosaNet/bin/
+/LimosaNet/LN.Core/obj/
+/LimosaNet/LN.Models/obj/
+/LimosaNet/LN.PosgreSQL/obj/
+/LimosaNet/LN.Application/bin/
+/LimosaNet/LN.Models/bin/
+/LimosaNet/LN.PosgreSQL/bin/
+/LimosaNet/LN.Core/bin/
+/.vs/LimosaNet/v17/.wsuo
+/.vs/VSWorkspaceState.json
+/LimosaNet/.vs/LimosaNet/DesignTimeBuild/.dtbcache.v2
+/LimosaNet/.vs/ProjectEvaluation/limosanet.projects.v6.1
+/LimosaNet/.vs/ProjectEvaluation/limosanet.metadata.v6.1
+/LimosaNet/.vs/LimosaNet/v17/.suo
+/LimosaNet/.vs/LimosaNet/v17/.futdcache.v2
+/LimosaNet/.vs/LimosaNet/FileContentIndex/read.lock
