@@ -33,7 +33,7 @@ namespace LimosaNet.Controllers
         /// удаление пользователя
         /// </summary>
         /// <returns></returns>
-       
+        [Authorize]
         [HttpDelete("{id:int}")]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task DeleteUser(int id, CancellationToken token) =>
@@ -44,7 +44,7 @@ namespace LimosaNet.Controllers
         /// Получение списка пользователей
         /// </summary>
         /// <returns></returns>
-        
+        [Authorize]
         [HttpGet]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<List<UserViewDto>> UserList(CancellationToken token) =>
@@ -54,7 +54,7 @@ namespace LimosaNet.Controllers
         /// Получение пользователя по id
         /// </summary>
         /// <returns></returns>
-       
+        [Authorize]
         [HttpGet("{id:int}")]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<UserViewDto> UserByIdt(int id, CancellationToken token) =>

@@ -5,8 +5,11 @@ using LN.Contracts.Models;
 using LN.Contracts.Service;
 using LN.PosgreSQL;
 using LN.PosgreSQL.Providers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
+using System.Text;
 
 namespace LimosaNet.Code
 {
@@ -42,6 +45,8 @@ namespace LimosaNet.Code
                 var connString = configuration.GetConnectionString("DefaultConnection");
                 options.UseNpgsql(connString);                
             });
+
+            services.UseAuth(configuration);
         }
 
 
@@ -50,6 +55,52 @@ namespace LimosaNet.Code
             services.AddMediatR(cfg=>cfg.RegisterServicesFromAssemblies(assemblies));            
         }
 
-        
+        private static void UseAuth(this IServiceCollection services, IConfiguration configuration)
+        {
+            // Register the ConfigurationBuilder instance of AuthSettings
+
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = false,
+                ValidIssuer = AuthOptions.ISSUER,
+
+                ValidateAudience = false,
+                ValidAudience = AuthOptions.AUDIENCE,
+
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+
+                RequireExpirationTime = true,
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero
+            };
+            services.AddTransient<TokenValidationParameters>(p => tokenValidationParameters);
+           
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(options =>
+            {
+                // todo: get from IoC
+                //var tokenValidationParameters = services.BuildServiceProvider().GetService<TokenValidationParameters>();
+                options.TokenValidationParameters = tokenValidationParameters;
+                options.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = context =>
+                    {
+                        if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                        {
+                            context.Response.Headers.Add("Token-Expired", "true");
+                        }
+                        return Task.CompletedTask;
+                    }
+                   
+                };
+            });
+                    
+        }
     }
 }
