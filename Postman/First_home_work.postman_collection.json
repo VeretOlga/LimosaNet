@@ -1,0 +1,163 @@
+{
+	"info": {
+		"_postman_id": "465bd62b-20ea-4c77-a5aa-645187e1758d",
+		"name": "First_home_work",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Регистрация пользователей",
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"firstName\": \"Настя-1\",\r\n  \"secondName\": \"Прекрасная-1\",\r\n  \"old\": 30,\r\n  \"city\": \"Рудня\",\r\n  \"hobbies\": \"вязание\",\r\n  \"email\": \"nastya-1@test.ru\",\r\n  \"password\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{serverHW}}/User/RegisterUser",
+					"host": [
+						"{{serverHW}}"
+					],
+					"path": [
+						"User",
+						"RegisterUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Authorize",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var result = responseBody\r",
+							"pm.globals.set(\"tokenBearer\", result);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"nastya-1@test.ru\",\r\n  \"password\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{serverHW}}/Auth/Login",
+					"host": [
+						"{{serverHW}}"
+					],
+					"path": [
+						"Auth",
+						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Список пользователей",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{tokenBearer}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{serverHW}}/User",
+					"host": [
+						"{{serverHW}}"
+					],
+					"path": [
+						"User"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Получение пользователя по индентификатору",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{tokenBearer}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{serverHW}}/User/8",
+					"host": [
+						"{{serverHW}}"
+					],
+					"path": [
+						"User",
+						"8"
+					],
+					"query": [
+						{
+							"key": "Id",
+							"value": "3",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Удаление пользователя по идентификатору",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{tokenBearer}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{serverHW}}/User/9",
+					"host": [
+						"{{serverHW}}"
+					],
+					"path": [
+						"User",
+						"9"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
